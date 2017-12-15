@@ -33,6 +33,7 @@ from matplotlib.cbook import _backports
 from matplotlib.colors import Normalize, LightSource
 from matplotlib.transforms import Bbox
 from matplotlib.tri.triangulation import Triangulation
+from matplotlib.artist import allow_rasterization
 
 from . import art3d
 from . import proj3d
@@ -250,6 +251,7 @@ class Axes3D(Axes):
                  (tc[7], tc[4])]
         return edges
 
+    @allow_rasterization
     def draw(self, renderer):
         # draw the background patch
         self.patch.draw(renderer)
