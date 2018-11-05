@@ -813,7 +813,7 @@ class TextArea(OffsetBox):
         bbox, info, d = self._text._get_layout(renderer)
         w, h = bbox.width, bbox.height
 
-        line = info[-1][0]  # last line
+        #line = info[-1][0]  # last line
 
         self._baseline_transform.clear()
 
@@ -1499,6 +1499,24 @@ class AnnotationBbox(martist.Artist, _AnnotationBase):
         """
         return self.prop.get_size_in_points()
 
+    def get_window_extent(self, renderer):
+        """
+        get the bounding box in display space.
+        """
+        bboxes = [child.get_window_extent(renderer) \
+                  for child in self.get_children()]
+
+        return Bbox.union(bboxes)
+
+    def get_tightbbox(self, renderer):
+        """
+        get tight bounding box in display space.
+        """
+        bboxes = [child.get_tightbbox(renderer) \
+                  for child in self.get_children()]
+
+        return Bbox.union(bboxes)
+
     def update_positions(self, renderer):
         """
         Update the pixel positions of the annotated point and the text.
@@ -1543,7 +1561,6 @@ class AnnotationBbox(martist.Artist, _AnnotationBase):
         ox1, oy1 = x, y
 
         if self.arrowprops:
-            x0, y0 = x, y
 
             d = self.arrowprops.copy()
 
