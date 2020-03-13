@@ -11,20 +11,39 @@ formatters are provided, as well as domain specific custom ones.
 Default Formatter
 -----------------
 
-The default formatter identifies when the x-data being plotted is a
+The default formatter for linear axes is the `.ScalarFormatter`. It will
+automatically pick a suitable format string for the data that is displayed,
+and hence gives a nice visual appearance for most standard cases.
+
+Offset and factor
+~~~~~~~~~~~~~~~~~
+
+The default formatter identifies when the data being plotted is a
 small range on top of a large offset. To reduce the chances that the
 ticklabels overlap, the ticks are labeled as deltas from a fixed offset.
 For example::
 
-   ax.plot(np.arange(2000, 2010), range(10))
+   ax.plot(np.arange(20000, 20010), np.arange(10))
 
-will have tick of 0-9 with an offset of +2e3. If this is not desired
+will have ticks of 0-8 with an offset of +2e4. If this is not desired
 turn off the use of the offset on the default formatter::
 
    ax.get_xaxis().get_major_formatter().set_useOffset(False)
 
 Set :rc:`axes.formatter.useoffset` to turn it off
 globally, or set a different formatter.
+
+Similar to the above, if the data range becomes very large or very small,
+a factor in scientific notation may be shown. For example::
+
+    ax.plot(np.linspace(0, 3e8, 31), np.arange(31))
+
+will have ticks from 0.0 to 3.0 with a factor 1e8. To turn this factor off,
+set the scientific notation::
+
+    ax.get_xaxis().get_major_formatter().set_scientific(False)
+
+or set it globally via :rc:`axes.formatter.limits`.
 
 Tick locating
 -------------
